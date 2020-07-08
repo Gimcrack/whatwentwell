@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Nav extends Component
 {
-    public $theme = 'Light';
+    public $theme = 'Dark';
 
     public function mount()
     {
@@ -19,8 +19,12 @@ class Nav extends Component
         return view('livewire.nav');
     }
 
-    public function updatedTheme($theme)
+    public function changeTheme()
     {
+        $theme = ( $this->theme === 'Light' ) ? 'Dark' : 'Light';
+
+        $this->theme = $theme;
+
         Session::put('theme',$theme);
         $this->emit('UpdatePreferences',compact('theme'));
     }

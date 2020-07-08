@@ -4,3 +4,17 @@
 
 @tailwind utilities;
 
+@import "~@fortawesome/fontawesome-pro/css/all.css";
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+
+#app {
+    transition: all 0.5s linear;
+}
+
+button[disabled] {
+    cursor: not-allowed;
+}
+
+[x-cloak] {
+    display: none;
+}

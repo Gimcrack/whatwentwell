@@ -1,25 +1,36 @@
 @section('theme'){{ $theme === 'Dark' ? 'mode-dark' : 'mode-light' }}@endsection
 
 
-<div id="app" class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-green-400 text-4xl">
+<div id="app" class="bg-gray-300 dark:bg-gray-900 text-gray-900 dark:text-green-400">
     <livewire:nav/>
 
-    <div class="flex flex-col space-y-16 h-screen antialiased leading-none items-center justify-center w-1/2 mx-auto">
-        <div class="flex">
-            What went well today?
-        </div>
-        <input autofocus type="text" class="bg-transparent
-            border-b p-6 text-2xl w-full border-gray-800 outline-none
-            dark:border-green-400 dark-focus:bg-black
-            focus:border-opacity-50 focus:bg-opacity-50 focus:bg-white
-            "
-        >
+    <div style="max-width:960px" class="flex flex-col space-y-20 h-screen antialiased leading-none items-center justify-center w-11/12 xl:w-2/3 mx-auto">
 
-        <div class="flex space-x-4">
-            <button class="btn btn-3d btn-gray">Cancel</button>
-            <button class="btn btn-3d btn-green">Go</button>
-        </div>
+        @if($page === 'write')
+            <livewire:pages.write/>
+        @elseif($page === 'about')
+
+        @elseif($page === 'settings')
+
+        @elseif($page === 'history')
+
+        @endif
+
+        <livewire:menu/>
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+    window.livewire.on('Navigate', function(page) {
+        window.history.pushState({page},page.toUpperCase(),'/' + page);
+        console.log({page});
+    });
+
+    window.onpopstate = function(event) {
+        console.log(event);
+    }
+</script>
+@endpush
 

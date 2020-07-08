@@ -7,22 +7,24 @@ use Livewire\Component;
 
 class Welcome extends Component
 {
-    public $theme = 'Light';
+    public $theme = 'Dark';
+
+    public $page = 'write';
 
     protected $listeners = [
-        'UpdatePreferences' => 'updatePreferences'
+        'UpdatePreferences' => 'updatePreferences',
+        'Navigate' => 'navigate'
     ];
 
     public function mount()
     {
         $this->theme = Session::get('theme','Light');
+        $this->page = trim(request()->path(),'/') ?: 'write';
     }
 
     public function render()
     {
-        return view('livewire.welcome', [
-            'theme' => $this->theme
-        ]);
+        return view('livewire.welcome');
     }
 
     public function updatePreferences($prefs)
@@ -31,5 +33,10 @@ class Welcome extends Component
         {
             $this->theme = $prefs['theme'];
         }
+    }
+
+    public function navigate($page)
+    {
+        $this->page = $page;
     }
 }
