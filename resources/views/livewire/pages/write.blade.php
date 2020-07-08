@@ -44,7 +44,7 @@
 
 
 
-    <div class="flex space-x-20 text-6xl mb-10">
+    <div class="flex space-x-20 text-2xl sm:text-4xl md:text-5xl lg:text-6xl mb-10">
         <button wire:click="newPrompt"
                 class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-100"
         >
