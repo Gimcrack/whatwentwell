@@ -1,4 +1,5 @@
 require('./bootstrap');
+window.moment = require('moment-timezone');
 
 window.livewire.on('UpdatePreferences', ({theme}) => {
     if (theme && theme === 'Dark') {
@@ -9,4 +10,5 @@ window.livewire.on('UpdatePreferences', ({theme}) => {
         document.querySelector('html').classList.remove('mode-dark')
         document.querySelector('html').classList.add('mode-light');
     }
-})
+});
+

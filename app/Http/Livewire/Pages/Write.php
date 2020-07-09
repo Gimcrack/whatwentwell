@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -61,5 +62,10 @@ class Write extends Component
             $this->promptIndex = 0;
 
         $this->prompt = $this->prompts[$this->promptIndex];
+    }
+
+    public function getCurrentDateProperty()
+    {
+        return Carbon::now()->format("r");
     }
 }

@@ -36,4 +36,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created( function($model) {
+           $model->preferences()->create();
+        });
+    }
+
+    public function preferences()
+    {
+        return $this->hasOne(Preferences::class);
+    }
 }
