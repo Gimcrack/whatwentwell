@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap);/*!
+@import url(https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Quicksand&display=swap);/*!
  * Font Awesome Pro 5.13.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Commercial License)
  */
@@ -17592,12 +17592,6 @@ video {
   }
 }
 
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
 @media (min-width: 1280px) {
   .container {
     max-width: 1280px;
@@ -32031,6 +32025,10 @@ video {
   font-family: Gloria\ Hallelujah;
 }
 
+.font-normal {
+  font-family: Quicksand, sans-serif;
+}
+
 .font-hairline {
   font-weight: 100;
 }
@@ -33553,10 +33551,6 @@ video {
 
 .max-w-screen-md {
   max-width: 768px;
-}
-
-.max-w-screen-lg {
-  max-width: 1024px;
 }
 
 .max-w-screen-xl {
@@ -51543,6 +51537,10 @@ button[disabled] {
     font-family: Gloria\ Hallelujah;
   }
 
+  .sm\:font-normal {
+    font-family: Quicksand, sans-serif;
+  }
+
   .sm\:font-hairline {
     font-weight: 100;
   }
@@ -53065,10 +53063,6 @@ button[disabled] {
 
   .sm\:max-w-screen-md {
     max-width: 768px;
-  }
-
-  .sm\:max-w-screen-lg {
-    max-width: 1024px;
   }
 
   .sm\:max-w-screen-xl {
@@ -63764,6 +63758,10 @@ button[disabled] {
     font-family: Gloria\ Hallelujah;
   }
 
+  .md\:font-normal {
+    font-family: Quicksand, sans-serif;
+  }
+
   .md\:font-hairline {
     font-weight: 100;
   }
@@ -65286,10 +65284,6 @@ button[disabled] {
 
   .md\:max-w-screen-md {
     max-width: 768px;
-  }
-
-  .md\:max-w-screen-lg {
-    max-width: 1024px;
   }
 
   .md\:max-w-screen-xl {
@@ -73910,7 +73904,7 @@ button[disabled] {
   }
 }
 
-@media (min-width: 1024px) {
+@media screen and (min-width:1024px) and (min-height: 1024px) {
   .lg\:space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -75985,6 +75979,10 @@ button[disabled] {
     font-family: Gloria\ Hallelujah;
   }
 
+  .lg\:font-normal {
+    font-family: Quicksand, sans-serif;
+  }
+
   .lg\:font-hairline {
     font-weight: 100;
   }
@@ -77507,10 +77505,6 @@ button[disabled] {
 
   .lg\:max-w-screen-md {
     max-width: 768px;
-  }
-
-  .lg\:max-w-screen-lg {
-    max-width: 1024px;
   }
 
   .lg\:max-w-screen-xl {
@@ -88206,6 +88200,10 @@ button[disabled] {
     font-family: Gloria\ Hallelujah;
   }
 
+  .xl\:font-normal {
+    font-family: Quicksand, sans-serif;
+  }
+
   .xl\:font-hairline {
     font-weight: 100;
   }
@@ -89728,10 +89726,6 @@ button[disabled] {
 
   .xl\:max-w-screen-md {
     max-width: 768px;
-  }
-
-  .xl\:max-w-screen-lg {
-    max-width: 1024px;
   }
 
   .xl\:max-w-screen-xl {

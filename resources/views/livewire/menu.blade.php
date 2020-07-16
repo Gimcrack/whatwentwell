@@ -1,8 +1,8 @@
 <div x-data="{
     showMenu : false
 
-}" class="fixed bottom-0 mx-auto" @click.away="showMenu=false" @click="showMenu=true">
-    <div class="flex flex-col items-center justify-center text-2xl sm:text-4xl md:text-5xl lg:text-6xl" >
+}" class="fixed bottom-0 w-full" @click.away="showMenu=false" @click="showMenu=true">
+    <div class="flex flex-col items-center justify-center text-2xl sm:text-4xl md:text-5xl lg:text-6xl mx-auto" >
         <div x-show="! showMenu"
              class="cursor-pointer p-1 rounded-t-lg bg-gray-800 dark:bg-green-500 text-gray-100 dark:text-gray-900 text-3xl"
              x-transition:enter="transition ease-in delay-100 duration-100"
@@ -24,6 +24,24 @@
             x-transition:leave-end="translate-y-20 scale-50"
 
         >
+            @guest
+            <a href="{{ route('login') }}"
+                    class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-200 transform hover:scale-150"
+            >
+                <i class="fal fa-fw fa-sign-in"></i>
+            </a>
+            @endguest
+
+            @auth
+            <form x-ref="logoutForm" x-data action="{{ route('logout') }}" method="POST">
+            @csrf
+            <a @click.prevent="$refs.logoutForm.submit()" href="{{ route('logout') }}"
+                    class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-200 transform hover:scale-150"
+            >
+                <i class="fal fa-fw fa-sign-out"></i>
+            </a>
+            </form>
+            @endauth
             <button wire:click="$set('page','write')"
                     class="{{ $page == 'write' ? 'disabled text-green-500 dark:text-green-100' : '' }}
                         transition-all duration-150 hover:text-green-500 dark-hover:text-green-200 transform hover:scale-150"

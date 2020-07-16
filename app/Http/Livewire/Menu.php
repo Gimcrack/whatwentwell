@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Repositories\Preferences\Facades\Preferences;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -14,7 +15,7 @@ class Menu extends Component
     public function mount()
     {
         $this->page = trim(request()->path(),'/') ?: 'write';
-        $this->theme = Session::get('theme','Light');
+        $this->theme = Preferences::get('theme');
     }
 
     public function render()
@@ -39,7 +40,8 @@ class Menu extends Component
 
         $this->theme = $theme;
 
-        Session::put('theme',$theme);
+        Preferences::set('theme',$this->theme);
+
         $this->emit('UpdatePreferences',compact('theme'));
     }
 }

@@ -11,8 +11,10 @@ module.exports = {
         }
     },
     theme: {
+
         fontFamily: {
-            'heading': ['Gloria\\ Hallelujah']
+            'heading': ['Gloria\\ Hallelujah'],
+            'normal' : ['Quicksand', 'sans-serif'],
         },
         fontSize: {
             'xs': '.75rem',
@@ -28,7 +30,16 @@ module.exports = {
             '7xl': '5rem',
             '8xl': '6rem',
         },
-        extend: {}
+        extend: {
+            screens: {
+                sm: '640px',
+                md: '768px',
+                lg: {
+                    'raw': 'screen and (min-width:1024px) and (min-height: 1024px)'
+                },//'1024px',
+                xl: '1280px',
+            },
+        }
     },
     variants: {
         backgroundColor: ['dark', 'dark-focus', 'dark-active', 'dark-hover', 'dark-group-hover', 'dark-even', 'dark-odd', 'active', 'focus', 'disabled', 'hover'],

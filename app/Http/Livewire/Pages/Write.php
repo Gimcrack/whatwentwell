@@ -2,7 +2,11 @@
 
 namespace App\Http\Livewire\Pages;
 
+use App\Post;
+use App\Prompt;
+use App\Repositories\Prompts\Prompts;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -10,32 +14,31 @@ class Write extends Component
 {
     public $entry = 'Let me tell you about it...';
 
-    public $prompt = 'What went well today?';
-
-    public $prompts = [
-        'What went well today?',
-        'What could have gone better?',
-        'What did you accomplish?',
-        'What did you decide?'
-    ];
-
-    public $promptIndex = 0;
-
     public $invalid = false;
+
+    public $prompt;
+
+    protected $post;
+
+    protected $cacheKey;
 
     public function render()
     {
         return view('livewire.pages.write');
     }
 
-    public function mount()
+    public function mount($prompt)
     {
-        $this->entry = Session::get('entry');
+        $this->prompt = $prompt;
+
+        $this->cacheKey = "prompts." . md5($this->prompt['question']) . ".entry";
+
+        $this->entry = Session::get($this->cacheKey, $this->currentPost()->entry);
     }
 
     public function updatedEntry($entry)
     {
-        Session::put('entry',$entry);
+        Session::put($this->cacheKey,$entry);
         $this->invalid = false;
     }
 
@@ -52,20 +55,39 @@ class Write extends Component
             $this->emit('ShowInvalid');
             return;
         }
+
+        if ( ! auth()->check() ) {
+            Session::flash("type","warning");
+            Session::flash("message","Please log in to continue");
+            return redirect()->route('login');
+        }
+
+        $post = $this->currentPost();
+        $post->entry = $this->entry;
+        $post->save();
+
+        Session::remove($this->cacheKey);
+        $this->emit('Continue');
     }
 
-    public function newPrompt()
-    {
-        $this->promptIndex++;
-
-        if ( $this->promptIndex >= count($this->prompts) )
-            $this->promptIndex = 0;
-
-        $this->prompt = $this->prompts[$this->promptIndex];
-    }
 
     public function getCurrentDateProperty()
     {
         return Carbon::now()->format("r");
     }
+
+    public function currentPost()
+    {
+        if ( auth()->guest() ) {
+            return new Post;
+        }
+
+        return Post::firstOrNew([
+            'prompt_id' => $this->prompt['id'],
+            'user_id' => auth()->id(),
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+        ]);
+    }
+
+
 }

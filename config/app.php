@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\PreferencesProvider::class,
+
     ],
 
     /*
@@ -227,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Preferences' => App\Repositories\Preferences\Facades\Preferences::class
     ],
 
 ];

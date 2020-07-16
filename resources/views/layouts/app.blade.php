@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="@yield('theme')" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="{{ Preferences::get('theme') === 'Dark' ? 'mode-dark' : 'mode-light' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,15 @@
     @livewireStyles
 </head>
 <body>
-    @yield('content')
+    <div id="app" class="flex flex-col bg-gray-300 dark:bg-gray-900 text-gray-900 dark:text-green-400 min-h-screen">
+        @yield('content')
+    </div>
+
+    @if(session()->has('message'))
+    <x-flash-message type="{{ session()->get('type','success') }}">
+        {{ session()->get('message') }}
+    </x-flash-message>
+    @endif
 
     @livewireScripts
     @stack('scripts')

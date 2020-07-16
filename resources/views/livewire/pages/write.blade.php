@@ -1,4 +1,4 @@
-<div x-data="{
+<div x-init="listen" x-data="{
         editingPrompt : false,
 
         showInvalid : {{ (int) $invalid }},
@@ -10,6 +10,22 @@
         currentDate : moment.utc('{{ $this->currentDate }}').local().format('MMM D'),
 
         currentTime : moment.utc('{{ $this->currentDate }}').local().format('h:mm A'),
+
+        listen() {
+            window.livewire.on('Continue', () => {
+                setTimeout( () => {
+                    this.$refs.entry.focus();
+                }, 500 );
+            });
+
+            window.livewire.on('Focus', () => {
+                setTimeout( () => {
+                    this.$refs.entry.focus();
+                }, 500 );
+            });
+
+            this.focus();
+        },
 
         clear() {
             @this.call('clearEntry');
@@ -38,83 +54,75 @@
               @this.call('continue')
            }
         }
-     }"
+    }"
 
-     class="flex flex-col w-full justify-center items-center text-2xl sm:text-4xl md:text-5xl lg:text-6xl space-y-16">
+     class="flex flex-col w-full justify-center items-center text-2xl sm:text-4xl md:text-5xl lg:text-6xl space-y-16 flex-1 h-full">
 
-    <div wire:poll.60s class="text-4xl md:text-6xl lg:text-8xl font-heading relative">
-        <span>
-            <i class="fad fa-calendar-star"></i> <span x-text="currentDate"></span>
-        </span>
-        <span class="hidden md:inline">
-            <i class="fad fa-clock"></i> <span x-text="currentTime"></span>
-        </span>
-    </div>
-    <div class="font-heading tracking-wider justify-center flex space-x-20 text-center w-full">
-        <p x-show="! editingPrompt">
-            <label @click="toggleEditPrompt" for="entry" class="hover:underline hover:text-green-500 dark-hover:text-green-100 cursor-pointer">
-                {{$prompt}}
-            </label>
-        </p>
-        <p x-cloak x-show="editingPrompt" class="flex w-full">
-            <input @blur="toggleEditPrompt" x-ref="prompt" type="text" wire:model="prompt" class="bg-transparent rounded
-             border-b p-6 w-full border-gray-800 outline-none
-             dark:border-green-400 dark-focus:bg-black dark-focus:border-green-200
-             focus:bg-white
-             transition-all duration-150"
-            >
-        </p>
-
-        <button wire:click="newPrompt"
-            class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-100"
-        >
-            <i class="fal fa-fw fa-sync"></i>
-        </button>
-    </div>
-
-    <div class="w-full">
-        <textarea @keyup.enter="detectShiftAndSubmit" wire:model="entry" id="entry" autofocus rows="4" x-ref="entry"
-                 class="bg-transparent rounded font-heading
-             border-b p-6 text-lg lg:text-2xl w-full border-gray-800 outline-none
-             dark:border-green-400 dark-focus:bg-black dark-focus:border-green-200
-             focus:bg-white
-             transition-all duration-150
-    "></textarea>
-        <div class="text-right font-heading text-lg w-full mt-4 text-gray-600">
-            hint: ctrl + enter to continue
+    <div class="mx-auto flex space-x-10 items-center">
+{{--        <i class="fa fa-fw fa-caret-left"></i>--}}
+        <div wire:poll.30s class="text-4xl md:text-5xl lg:text-6xl font-heading relative rounded-b-lg bg-gray-800 dark:bg-green-500 text-gray-100 dark:text-gray-800 p-6">
+            <span>
+                <i class="fad fa-calendar-star"></i> <span x-text="currentDate"></span>
+            </span>
+            {{--        <span class="hidden md:inline">--}}
+            {{--            <i class="fad fa-clock"></i> <span x-text="currentTime"></span>--}}
+            {{--        </span>--}}
         </div>
+{{--        <i class="fa fa-fw fa-caret-right"></i>--}}
     </div>
 
+    <div class="flex flex-col space-y-16 flex-1 justify-center">
+        <div class="font-heading tracking-wider justify-center flex space-x-20 text-center w-full">
+            <label for="entry">
+                {{$this->prompt['question']}}
+            </label>
+        </div>
 
-    <p
-        x-cloak
-        x-show.transition="showInvalid"
-        class="text-xl text-red-700 dark:text-red-500 tracking-normal font-heading"
-    >
-        Please enter a response before continuing.
-    </p>
+        <div class="w-full">
+            <x-textarea @keyup.enter="detectShiftAndSubmit" wire:model="entry" id="entry" rows="4" autofocus
+                        x-ref="entry"></x-textarea>
+            <div class="flex font-heading text-lg text-gray-600 mt-4" style="min-height:4rem;">
+                <div wire:loading class="flex-1">
+                    <i class="fa fa-fw fa-circle-notch fa-spin"></i>
+                </div>
+                <div>&nbsp;</div>
+                <div x-cloak x-show.transition="showSubmit" class="text-right w-full">
+                    hint: ctrl + enter to continue
+                </div>
+            </div>
+        </div>
+
+        <x-invalid-helptext x-cloak
+                            x-show.transition="showInvalid">
+            Please enter a response before continuing.
+        </x-invalid-helptext>
+
+        <div class="flex justify-center space-x-20 text-2xl sm:text-4xl md:text-5xl lg:text-6xl">
+            <span x-cloak x-show.transition="showReset">
+                <button x-on:click="clear"
+                        class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-100"
+                >
+                    <i class="fal fa-fw fa-undo"></i>
+                </button>
+            </span>
+
+            <span class="delay-100" x-cloak x-show.transition="showSubmit">
+                <button wire:click="continue"
+                        class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-100"
+                >
+                    <i class="fal fa-fw fa-play"></i>
+                </button>
+            </span>
+        </div>
 
 
+{{--            <button @click="$dispatch('decr')" class="btn btn-green btn-outline fixed" style="top:45%; left: 4rem">--}}
+{{--                <i class="fa fa-fw fa-chevron-left cursor-pointer"></i>--}}
+{{--            </button>--}}
 
-    <div class="flex space-x-20 text-2xl sm:text-4xl md:text-5xl lg:text-6xl mb-10">
-        <span x-cloak x-show.transition="showReset">
-            <button x-on:click="clear"
-                class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-100"
-            >
-                <i class="fal fa-fw fa-undo"></i>
-            </button>
-        </span>
+{{--            <button @click="$dispatch('incr')" class="btn btn-green btn-outline fixed" style="top:45%; right: 4rem;">--}}
+{{--                <i class="fa fa-fw fa-chevron-right cursor-pointer"></i>--}}
+{{--            </button>--}}
 
-        <span class="delay-100" x-cloak x-show.transition="showSubmit">
-            <button wire:click="continue"
-                class="transition-all duration-150 hover:text-green-500 dark-hover:text-green-100"
-            >
-                <i class="fal fa-fw fa-play"></i>
-            </button>
-        </span>
-    </div>
-
-    <div class="mt-10">
-        &nbsp;
     </div>
 </div>

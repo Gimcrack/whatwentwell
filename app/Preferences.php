@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Repositories\Preferences as PreferencesRepository;
+use App\Repositories\Preferences\Facades\Preferences as PreferencesRepo;
 use Illuminate\Database\Eloquent\Model;
 
 class Preferences extends Model
@@ -18,7 +18,7 @@ class Preferences extends Model
         parent::boot();
 
         static::creating(function($model) {
-            $model->settings = PreferencesRepository::defaults();
+            $model->settings = PreferencesRepo::defaults();
         });
     }
 

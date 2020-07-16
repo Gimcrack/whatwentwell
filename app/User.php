@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Repositories\Prompts\Prompts;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -43,11 +44,20 @@ class User extends Authenticatable
 
         static::created( function($model) {
            $model->preferences()->create();
+
+           Prompts::defaults()->each(function($prompt) use ($model) {
+               $model->prompts()->save($prompt);
+           });
         });
     }
 
     public function preferences()
     {
         return $this->hasOne(Preferences::class);
+    }
+
+    public function prompts()
+    {
+        return $this->hasMany(Prompt::class);
     }
 }
